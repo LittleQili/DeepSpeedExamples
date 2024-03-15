@@ -71,12 +71,12 @@ def parse_args():
         default=16,
         help="Batch size (per device) for the training dataloader.",
     )
-    parser.add_argument(
-        "--per_device_eval_batch_size",
-        type=int,
-        default=16,
-        help="Batch size (per device) for the evaluation dataloader.",
-    )
+    # parser.add_argument(
+    #     "--per_device_eval_batch_size",
+    #     type=int,
+    #     default=16,
+    #     help="Batch size (per device) for the evaluation dataloader.",
+    # )
     parser.add_argument(
         "--max_seq_len",
         type=int,
@@ -282,10 +282,10 @@ def main():
                                   collate_fn=default_data_collator,
                                   sampler=train_sampler,
                                   batch_size=args.per_device_train_batch_size)
-    eval_dataloader = DataLoader(eval_dataset,
-                                 collate_fn=default_data_collator,
-                                 sampler=eval_sampler,
-                                 batch_size=args.per_device_eval_batch_size)
+    # eval_dataloader = DataLoader(eval_dataset,
+    #                              collate_fn=default_data_collator,
+    #                              sampler=eval_sampler,
+    #                              batch_size=args.per_device_eval_batch_size)
 
     def evaluation(model, eval_dataloader):
         model.eval()
@@ -340,10 +340,10 @@ def main():
     # Train!
     print_rank_0("***** Running training *****", args.global_rank)
     print_rank_0(
-        f"***** Evaluating perplexity, Epoch {0}/{args.num_train_epochs} *****",
+        f"***** Epoch {0}/{args.num_train_epochs} *****",
         args.global_rank)
-    perplexity, eval_loss = evaluation(model, eval_dataloader)
-    print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
+    # perplexity, eval_loss = evaluation(model, eval_dataloader)
+    # print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
 
     for epoch in range(args.num_train_epochs):
         print_rank_0(
@@ -369,10 +369,10 @@ def main():
 
         # Evaluate perplexity on the validation set.
         print_rank_0(
-            f"***** Evaluating perplexity, Epoch {epoch+1}/{args.num_train_epochs} *****",
+            f"***** Epoch {epoch+1}/{args.num_train_epochs} *****",
             args.global_rank)
-        perplexity, eval_loss = evaluation(model, eval_dataloader)
-        print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
+        # perplexity, eval_loss = evaluation(model, eval_dataloader)
+        # print_rank_0(f"ppl: {perplexity}, loss: {eval_loss}", args.global_rank)
         model.tput_timer.update_epoch_count()
 
     if args.output_dir is not None:

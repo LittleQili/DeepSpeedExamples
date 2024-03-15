@@ -13,7 +13,7 @@ if [ "$ZERO_STAGE" == "" ]; then
 fi
 mkdir -p $OUTPUT
 
-deepspeed --include localhost:7 \
+deepspeed --include localhost:4,5,6,7 \
    main.py \
    --data_path /localdata_ssd/yjdiao/models/Dahoas/rm-static \
       /localdata_ssd/yjdiao/models/Dahoas/full-hh-rlhf \
@@ -21,8 +21,7 @@ deepspeed --include localhost:7 \
       /localdata_ssd/yjdiao/models/yitingxie/rlhf-reward-datasets \
    --data_split 2,4,4 \
    --model_name_or_path /localdata_ssd/yjdiao/models/opt-1.3b \
-   --per_device_train_batch_size 8 \  
-   --per_device_eval_batch_size 8 \
+   --per_device_train_batch_size 8 \
    --max_seq_len 512 \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
@@ -37,3 +36,5 @@ deepspeed --include localhost:7 \
    --tensorboard_path $OUTPUT \
    --output_dir $OUTPUT \
    &> $OUTPUT/training.log
+   
+#    --per_device_eval_batch_size 8 \
