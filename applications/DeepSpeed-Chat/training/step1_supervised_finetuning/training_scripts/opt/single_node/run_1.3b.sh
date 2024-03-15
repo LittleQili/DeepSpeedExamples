@@ -13,16 +13,20 @@ if [ "$ZERO_STAGE" == "" ]; then
 fi
 mkdir -p $OUTPUT
 
-deepspeed main.py \
-   --data_path Dahoas/rm-static Dahoas/full-hh-rlhf Dahoas/synthetic-instruct-gptj-pairwise yitingxie/rlhf-reward-datasets \
+deepspeed --include localhost:7 \
+   main.py \
+   --data_path /localdata_ssd/yjdiao/models/Dahoas/rm-static \
+      /localdata_ssd/yjdiao/models/Dahoas/full-hh-rlhf \
+      /localdata_ssd/yjdiao/models/Dahoas/synthetic-instruct-gptj-pairwise \
+      /localdata_ssd/yjdiao/models/yitingxie/rlhf-reward-datasets \
    --data_split 2,4,4 \
-   --model_name_or_path facebook/opt-1.3b \
-   --per_device_train_batch_size 8 \
+   --model_name_or_path /localdata_ssd/yjdiao/models/opt-1.3b \
+   --per_device_train_batch_size 8 \  
    --per_device_eval_batch_size 8 \
    --max_seq_len 512 \
    --learning_rate 9.65e-6 \
    --weight_decay 0. \
-   --num_train_epochs 16 \
+   --num_train_epochs 1 \
    --gradient_accumulation_steps 1 \
    --lr_scheduler_type cosine \
    --num_warmup_steps 0 \

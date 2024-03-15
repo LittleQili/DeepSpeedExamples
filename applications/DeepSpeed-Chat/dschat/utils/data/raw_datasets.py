@@ -17,7 +17,7 @@ class PromptRawDataset(object):
         self.seed = seed
         self.local_rank = local_rank
         if os.path.exists(dataset_name):
-            self.raw_datasets = load_from_disk(dataset_name)
+            self.raw_datasets = load_dataset(dataset_name)
         elif not dataset_name == 'local/jsonfile':
             self.raw_datasets = load_dataset(dataset_name)
 
